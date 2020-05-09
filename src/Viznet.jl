@@ -1,5 +1,8 @@
 module Viznet
 
-greet() = print("Hello World!")
+using Compose
 
+include("Lattice.jl")
+include("compose.jl")
+include("brush.jl")
 end # module

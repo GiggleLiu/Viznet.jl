@@ -3,6 +3,9 @@ uuid = "52a3aca4-6234-47fd-b74a-806bdf78ede9"
 authors = ["GiggleLiu"]
 version = "0.1.0"
 
+[deps]
+Compose = "a81c6b42-2e10-5240-aca2-a61377ecd94b"
+
 [compat]
 julia = "1.4"
 
