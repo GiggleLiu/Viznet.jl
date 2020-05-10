@@ -37,5 +37,9 @@ canvas() do
 end |> SVG("_unitdisk.svg")
 ```
 
+## Gallery
+[Spin glass](examples/spinglass.jl)
+![spinglass](examples/spinglass.svg)
+
 ## Styles
-Document eaten by blackhole.
+Document eaten by a blackhole.
