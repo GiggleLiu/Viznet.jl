@@ -1,5 +1,7 @@
 abstract type AbstractSquareLattice <:AbstractLattice end
 
+export SquareLattice, bravais_size
+
 # square lattice
 function Base.getindex(lt::AbstractSquareLattice, i::Int)
     lt[CartesianIndices(bravais_size(lt))[i].I...]
@@ -24,22 +26,34 @@ end
 
 function Base.getindex(lt::SquareLattice, i::Int, j::Int)
     step = unit(lt)
-    (i-0.5 + lt.r)*step, (j-0.5 + lt.r)*step
+    (i-0.5)*step, (j-0.5)*step
 end
 
-unit(lt::SquareLattice) = 1/(max(lt.Nx, lt.Ny)+2*lt.r)
+vertices(sq::SquareLattice) = 1:sq.Nx*sq.Ny
 
-function locs(sq::SquareLattice)
-    xs = Float64[]
-    ys = Float64[]
-    for j=1:size(sq, 2), i=1:size(sq, 1)
-        xi, yi = sq[i,j]
-        push!(xs, xi)
-        push!(ys, yi)
+function bonds(sq::SquareLattice; nth::Int=1)
+    bbb = [1.0, sqrt(2), 2.0, sqrt(5)]
+    if nth > length(bbb)
+        error("We haven't implemented more than a general n-th order gradient for n>4.
+            Please give us a PR or file an issue!")
     end
-    return xs, ys
+    d =  bbb[nth] * unit(sq)
+    edges = Tuple{Int,Int}[]
+    nv = length(sq)
+    for i=1:nv
+        for j=i+1:nv
+            di = distance(sq[i], sq[j])
+            if di > d*0.999 && di < d*1.001
+                push!(edges, (i, j))
+            end
+        end
+    end
+    edges
 end
 
-@testset "lattice" begin
-    lt = SquareLattice(5,5)
-end
+"""
+    unit(lattice)
+
+The unit scale of the lattice.
+"""
+unit(lt::SquareLattice) = 1/(max(lt.Nx, lt.Ny))

@@ -2,8 +2,7 @@ module Viznet
 
 using Compose
 
-include("Lattice.jl")
-include("unitdisk.jl")
+include("lattices/lattices.jl")
 #include("compose.jl")
 include("brush.jl")
 include("styles.jl")

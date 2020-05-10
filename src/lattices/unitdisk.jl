@@ -5,6 +5,8 @@ struct UnitDisk{T} <: AbstractSites
     unit::T
 end
 
+unit(ud::UnitDisk) = ud.unit
+
 vertices(ud::UnitDisk) = 1:length(ud.locs)
 Base.getindex(ud::UnitDisk, i::Int) = ud.locs[i]
 

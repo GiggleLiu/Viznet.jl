@@ -7,3 +7,5 @@ using Viznet
     @test length(ud) == 3
     @test (bonds(ud) |> length) == 1
 end
+
+include("squarelattice.jl")

@@ -1,10 +1,10 @@
 using Viznet
 using Test
 
-@testset "brush.jl" begin
+@testset "brush" begin
     include("brush.jl")
 end
 
-@testset "Lattice.jl" begin
-    include("Lattice.jl")
+@testset "lattices" begin
+    include("lattices/lattices.jl")
 end

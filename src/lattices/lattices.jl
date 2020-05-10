@@ -1,4 +1,16 @@
-export vertices, bonds, distance, render
+export vertices, bonds, distance, unit
+export render
+
+"""
+    AbstractSites
+
+Abstrat type for all lattice or non-lattice atom collections.
+The interface includes
+
+* `vertices`
+* `bonds`
+* `Base.getindex`
+"""
 abstract type AbstractSites end
 abstract type AbstractLattice <: AbstractSites end
 
@@ -28,6 +40,7 @@ end
 function bond(lt::AbstractSites, loc1, loc2)
     lt[loc1], lt[loc2]
 end
+
 Base.typed_vcat(lt::AbstractSites, loc1, loc2) = bond(lt, loc1, loc2)
 
 distance(i::Tuple{T,T}, j::Tuple{T,T}) where T<:Real = sqrt((i[1] - j[1])^2 + (i[2] - j[2])^2)
@@ -43,3 +56,7 @@ function render(lt; line_style=bondstyle(:default), node_style=nodestyle(:defaul
     end
     flush!()
 end
+
+
+include("unitdisk.jl")
+include("squarelattice.jl")
