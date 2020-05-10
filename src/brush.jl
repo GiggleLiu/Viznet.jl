@@ -4,7 +4,7 @@ const EdgeT = Tuple{PointT, PointT}
 const NODE_CACHE = Dict{Context, Vector{PointT}}()
 const EDGE_CACHE = Dict{Context, Vector{EdgeT}}()
 
-export flush!
+export flush!, canvas
 
 function put_node!(brush::Context, x::PointT)
     if haskey(NODE_CACHE, brush)
@@ -73,7 +73,21 @@ function flush_nodes!(nodes::Dict)
     return lst
 end
 
-flush!() = compose(context(), flush_nodes!(NODE_CACHE), flush_edges!(EDGE_CACHE))
+function flush!()
+    compose(context(), flush_nodes!(NODE_CACHE)...,
+        flush_edges!(EDGE_CACHE)...)
+end
+
+"""
+    canvas(f)
+
+paint on global canvas.
+"""
+function canvas(f)
+    empty_cache!()
+    f()
+    flush!()
+end
 
 similar_edges(e::Form{<:LinePrimitive}, point_arrays) = line(point_arrays)
 function similar_nodes(n::Form{<:CirclePrimitive}, xys)

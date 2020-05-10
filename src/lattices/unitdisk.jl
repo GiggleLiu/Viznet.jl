@@ -23,7 +23,7 @@ function bonds(ud::UnitDisk)
     return edges
 end
 
-function rand_unitdisk(n::Int, ρ::Float64; ndims::Int=2)
+function rand_unitdisk(n::Int, ρ::Real; ndims::Int=2)
     unit = (ρ/n)^(1/ndims)
     UnitDisk([(rand(ndims)...,) for i=1:n], unit)
 end
