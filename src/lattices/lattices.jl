@@ -1,4 +1,4 @@
-export vertices, bonds, distance, unit
+export vertices, bonds, distance, unit, isconnected
 export render
 
 """
@@ -22,9 +22,9 @@ Get the vertices for the site collection.
 function vertices end
 
 """
-    bonds(sites)
+    isconnected(lattice, i, j; kwargs...)
 
-Get the bonds for the site collection.
+return true if sites `i` and `j` are connected.
 """
 function bonds end
 
@@ -45,6 +45,24 @@ Base.typed_vcat(lt::AbstractSites, loc1, loc2) = bond(lt, loc1, loc2)
 
 distance(i::Tuple{T,T}, j::Tuple{T,T}) where T<:Real = sqrt((i[1] - j[1])^2 + (i[2] - j[2])^2)
 Base.length(lt::AbstractSites) = length(vertices(lt))
+
+"""
+    bonds(atoms)
+
+Get the bonds for the atom collection.
+"""
+function bonds(ud::AbstractSites)
+    edges = Tuple{Int,Int}[]
+    n = length(ud)
+    for i = 1:n
+        for j = i+1:n
+            if isconnected(ud, i, j)
+                push!(edges, (i,j))
+            end
+        end
+    end
+    return edges
+end
 
 function render(lt; line_style=bondstyle(:default), node_style=nodestyle(:default))
     empty_cache!()

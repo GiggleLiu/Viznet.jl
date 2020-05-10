@@ -14,7 +14,11 @@ end
 
 @testset "bonds" begin
     lt = SquareLattice(4, 5)
-    @test length(bonds(lt; nth=1)) == 31
+    b1s = bonds(lt; nth=1)
+    @test length(b1s) == 31
+    for b in b1s
+        @test isconnected(lt, b...)
+    end
     @test length(bonds(lt; nth=2)) == 24
     @test length(bonds(lt; nth=3)) == 22
     @test length(bonds(lt; nth=4)) == 34

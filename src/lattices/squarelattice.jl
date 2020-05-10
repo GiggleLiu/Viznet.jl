@@ -31,6 +31,12 @@ end
 
 vertices(sq::SquareLattice) = 1:sq.Nx*sq.Ny
 
+function isconnected(sq::SquareLattice, i::Int, j::Int)
+    u = unit(sq)
+    d = distance(sq[i], sq[j])
+    d > 0.999u && d < 1.001u
+end
+
 function bonds(sq::SquareLattice; nth::Int=1)
     bbb = [1.0, sqrt(2), 2.0, sqrt(5)]
     if nth > length(bbb)

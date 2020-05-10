@@ -10,18 +10,7 @@ unit(ud::UnitDisk) = ud.unit
 vertices(ud::UnitDisk) = 1:length(ud.locs)
 Base.getindex(ud::UnitDisk, i::Int) = ud.locs[i]
 
-function bonds(ud::UnitDisk)
-    edges = Tuple{Int,Int}[]
-    n = length(ud)
-    for i = 1:n
-        for j = i+1:n
-            if distance(ud[i], ud[j]) <= ud.unit
-                push!(edges, (i,j))
-            end
-        end
-    end
-    return edges
-end
+isconnected(ud, i, j) = distance(ud[i], ud[j]) <= ud.unit
 
 function rand_unitdisk(n::Int, ρ::Real; ndims::Int=2)
     unit = (ρ/n)^(1/ndims)
