@@ -26,3 +26,20 @@ function Base.getindex(lt::SquareLattice, i::Int, j::Int)
     step = unit(lt)
     (i-0.5 + lt.r)*step, (j-0.5 + lt.r)*step
 end
+
+unit(lt::SquareLattice) = 1/(max(lt.Nx, lt.Ny)+2*lt.r)
+
+function locs(sq::SquareLattice)
+    xs = Float64[]
+    ys = Float64[]
+    for j=1:size(sq, 2), i=1:size(sq, 1)
+        xi, yi = sq[i,j]
+        push!(xs, xi)
+        push!(ys, yi)
+    end
+    return xs, ys
+end
+
+@testset "lattice" begin
+    lt = SquareLattice(5,5)
+end

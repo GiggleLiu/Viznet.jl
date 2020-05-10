@@ -1,6 +1,10 @@
 using Viznet
 using Test
 
-@testset "Viznet.jl" begin
-    # Write your own tests here.
+@testset "brush.jl" begin
+    include("brush.jl")
+end
+
+@testset "Lattice.jl" begin
+    include("Lattice.jl")
 end
