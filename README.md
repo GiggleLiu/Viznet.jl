@@ -37,9 +37,16 @@ canvas() do
 end |> SVG("_unitdisk.svg")
 ```
 
+To learn more about customizing styles, please go to the documentation of [Compose.jl](http://giovineitalia.github.io/Compose.jl/latest/).
+
 ## Gallery
-[Spin glass](examples/spinglass.jl)
+##### [Spin glass](examples/spinglass.jl)
+
 ![spinglass](examples/spinglass.svg)
+
+##### [Unit Disk Graph](examples/unitdisk.jl)
+![unitdisk](examples/unitdisk.svg)
+
 
 ## Styles
 Document eaten by a blackhole.
