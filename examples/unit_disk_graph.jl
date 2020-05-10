@@ -1,5 +1,7 @@
 using Viznet
 using Compose
+using Random
+Random.seed!(4)
 
 ud = rand_unitdisk(20, 2.0)
 
@@ -13,7 +15,7 @@ function fancy_unitdisk(ud)
     g1 = render(ud)
     g2 = canvas() do
         unitc >> ud[1]
-        unitc >> ud[10]
+        unitc >> ud[7]
     end
     compose(context(), g2, g1)
 end
