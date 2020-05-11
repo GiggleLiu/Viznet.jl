@@ -46,7 +46,7 @@ To learn more about customizing styles, please go to the documentation of [Compo
 
 ![spinglass](examples/spinglass.svg)
 
-##### [Unit Disk Graph](examples/unitdisk.jl)
+##### [Unit Disk Graph](examples/unit_disk_graph.jl)
 ![unitdisk](examples/unitdisk.svg)
 
 
