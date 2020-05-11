@@ -1,4 +1,5 @@
-using Compose: LinePrimitive, CirclePrimitive, Form
+using Compose: LinePrimitive, CirclePrimitive, Form, SimplePolygonPrimitive,
+    RectanglePrimitive, TextPrimitive, ArcPrimitive, CurvePrimitive
 const PointT = Tuple{Float64,Float64}
 const EdgeT = Tuple{PointT, PointT}
 const NODE_CACHE = Dict{Context, Vector{PointT}}()
@@ -54,7 +55,7 @@ function flush_edges!(edges::Dict)
         c = inner_most_container(b)
         line = first(c.form_children)
         c.form_children.head = similar_edges(line, lines)
-        push!(lst, c)
+        push!(lst, b)
     end
     empty!(EDGE_CACHE)
     return lst
@@ -67,7 +68,7 @@ function flush_nodes!(nodes::Dict)
         c = inner_most_container(b)
         v = first(c.form_children)
         c.form_children.head = similar_nodes(v, vs)
-        push!(lst, c)
+        push!(lst, b)
     end
     empty!(NODE_CACHE)
     return lst
@@ -90,9 +91,44 @@ function canvas(f)
 end
 
 similar_edges(e::Form{<:LinePrimitive}, point_arrays) = line(point_arrays)
+function similar_edges(e::Form{<:ArcPrimitive}, point_arrays)
+    c = first(e.primitives)
+    as = getindex.(point_arrays,1)
+    bs = getindex.(point_arrays,2)
+    arc(as, bs, [c.radius], [c.angle1], [c.angle2], [c.sector])
+end
+
+function similar_edges(e::Form{<:CurvePrimitive}, point_arrays)
+    c = first(e.primitives)
+    as = getindex.(point_arrays,1)
+    bs = getindex.(point_arrays,2)
+    ctrl0s = map(x->x[1] .* (cx, cy) .+ c.ctrl0, point_arrays)
+    ctrl1s = map(x->x[2] .* (cx, cy) .+ c.ctrl1, point_arrays)
+    curve(as, bs, ctrl0s, ctrl1s)
+end
+
 function similar_nodes(n::Form{<:CirclePrimitive}, xys)
     c = first(n.primitives)
     xs = map(p->c.center[1] + p[1]*cx, xys)
     ys = map(p->c.center[2] + p[2]*cy, xys)
     circle(xs, ys, [c.radius])
+end
+
+function similar_nodes(p::Form{<:SimplePolygonPrimitive}, xys)
+    c = first(p.primitives)
+    polygon(map(x-> map(pi->(x[1]*cx + pi[1], x[2]*cy + pi[2]), c.points), xys))
+end
+
+function similar_nodes(n::Form{<:RectanglePrimitive}, xys)
+    c = first(n.primitives)
+    xs = map(p->c.corner[1] + p[1]*cx, xys)
+    ys = map(p->c.corner[2] + p[2]*cy, xys)
+    rectangle(xs, ys, [c.width], [c.height])
+end
+
+function similar_nodes(n::Form{<:TextPrimitive}, xys)
+    c = first(n.primitives)
+    xs = map(p->c.position[1] + p[1]*cx, xys)
+    ys = map(p->c.position[2] + p[2]*cy, xys)
+    text(xs, ys, [c.value], [c.halign], [c.valign], [c.rot], [tt.offset])
 end
