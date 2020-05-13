@@ -1,5 +1,5 @@
 export vertices, bonds, distance, unit, isconnected
-export render
+export showlattice
 
 """
     AbstractSites
@@ -40,6 +40,9 @@ end
 function bond(lt::AbstractSites, loc1, loc2)
     lt[loc1], lt[loc2]
 end
+function bond(lt::AbstractSites, loc1::CartesianIndex, loc2::CartesianIndex)
+    lt[loc1.I...], lt[loc2.I...]
+end
 
 Base.typed_vcat(lt::AbstractSites, loc1, loc2) = bond(lt, loc1, loc2)
 
@@ -64,10 +67,13 @@ function bonds(ud::AbstractSites)
     return edges
 end
 
-function render(lt; line_style=bondstyle(:default), node_style=nodestyle(:default))
+function showlattice(lt; line_style=compose(bondstyle(:default), stroke("black")),
+        node_style=compose(context(), nodestyle(:default), stroke("black"), fill("white"), linewidth(0.5mm)),
+        text_style=textstyle(:default))
     empty_cache!()
     for node in vertices(lt)
         node_style >> lt[node]
+        text_style >> (lt[node], "$node")
     end
     for bond in bonds(lt)
         line_style >> lt[bond[1]; bond[2]]
@@ -78,3 +84,4 @@ end
 
 include("unitdisk.jl")
 include("squarelattice.jl")
+include("chimera.jl")

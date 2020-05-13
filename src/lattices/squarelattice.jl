@@ -24,7 +24,7 @@ struct SquareLattice <: AbstractSquareLattice
     Ny::Int
 end
 
-function Base.getindex(lt::SquareLattice, i::Int, j::Int)
+function Base.getindex(lt::SquareLattice, i::Real, j::Real)
     step = unit(lt)
     (i-0.5)*step, (j-0.5)*step
 end

@@ -12,7 +12,7 @@ function fancy_unitdisk(ud)
         fill("transparent"),
         strokedash([1mm,1mm]),
         )
-    g1 = render(ud)
+    g1 = showlattice(ud)
     g2 = canvas() do
         unitc >> ud[1]
         unitc >> ud[7]

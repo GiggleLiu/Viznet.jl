@@ -9,3 +9,5 @@ using Viznet
 end
 
 include("squarelattice.jl")
+
+include("chimera.jl")

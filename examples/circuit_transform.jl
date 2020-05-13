@@ -4,8 +4,8 @@ set_default_graphic_size(12cm, 12cm)
 
 dot = nodestyle(:circle;r = 0.005)
 diamond = nodestyle(:diamond)
-tri1 = nodestyle(:triangle; θ=π/2)
-tri2 = nodestyle(:triangle; θ=-π/2)
+tri1 = nodestyle(:triangle; θ=-π/2)
+tri2 = nodestyle(:triangle; θ=π/2)
 sq = nodestyle(:square; r=0.015)
 e1 = bondstyle(:default)
 lt = SquareLattice(10, 10)
@@ -19,7 +19,7 @@ function vnode(node)
     end
 end
 
-function circuit_body()
+function circuit_body(lt)
     for i in vertices(lt)
         dot >> lt[i]
     end
@@ -35,15 +35,38 @@ function circuit_body()
     end
 end
 
-function circuit_ends()
+function circuit_ends(lt)
+    offset = 0.7
     for j=1:lt.Ny
-        e1 >> lt[(0,j);(lt.Nx+1,j)]
-        tri1 >> lt[0,j]
-        tri2 >> lt[lt.Nx+1,j]
+        e1 >> lt[(1-offset,j);(lt.Nx+offset,j)]
+        tri1 >> lt[1-offset,j]
+        tri2 >> lt[lt.Nx+offset,j]
+    end
+end
+
+function circuit_body2(lt)
+    offset = 0.15
+    for j=1:lt.Ny-1
+        i = 1
+        _offset = j % 2 == 0 ? offset : -offset
+        e1 >> lt[(i+_offset,j); (i+_offset, j+1)]
+        diamond >> (lt[i+_offset,j]./2 .+ lt[i+_offset, j+1]./2)
+    end
+
+    for i=2:lt.Nx
+        for j=1:lt.Ny
+            _offset = j % 2 == 0 ? offset : -offset
+            sq >> (lt[i-1,j]./2 .+ lt[i, j]./2)
+        end
+        for j=1:lt.Ny-1
+            _offset = j % 2 == 0 ? offset : -offset
+            e1 >> lt[(i+_offset,j); (i+_offset, j+1)]
+            diamond >> (lt[i+_offset,j]./2 .+ lt[i+_offset, j+1]./2)
+        end
     end
 end
 
 compose(context(0.1,0.1,0.8,0.8), canvas() do
-    circuit_body()
-    circuit_ends()
+    circuit_body2(lt)
+    circuit_ends(lt)
 end)

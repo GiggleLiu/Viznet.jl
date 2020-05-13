@@ -1,6 +1,6 @@
 using Viznet
 using Viznet: inner_most_container, put_edge!, put_node!, empty_cache!, nedge, nnode,
-    flush_edges!, flush_nodes!, EDGE_CACHE, NODE_CACHE, similar_nodes, similar_edges
+    EDGE_CACHE, NODE_CACHE, similar_nodes, similar_edges
 using Test
 using Compose
 
@@ -28,7 +28,7 @@ end
     c >> ((0.3, 0.8), (2.3, 1.9))
     c0 = bondstyle(:default)
     c0 >> ((0.3, 0.8), (2.3, 2.9))
-    lst = flush_edges!(EDGE_CACHE)
+    lst = flush!(EDGE_CACHE)
     @test length(lst) == 2
 end
 
@@ -39,7 +39,7 @@ end
     c >> (0.3, 0.8)
     c0 = nodestyle(:default)
     c0 >> (0.3, 0.8)
-    lst = flush_nodes!(NODE_CACHE)
+    lst = flush!(NODE_CACHE)
     @test length(lst) == 2
 end
 
