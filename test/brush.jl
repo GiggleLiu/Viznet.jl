@@ -1,6 +1,6 @@
 using Viznet
 using Viznet: inner_most_container, put_edge!, put_node!, empty_cache!, nedge, nnode,
-    EDGE_CACHE, NODE_CACHE, similar_nodes, similar_edges
+    EDGE_CACHE, NODE_CACHE
 using Test
 using Compose
 
@@ -60,7 +60,7 @@ end
         circle(0.1, 0.2, 0.3),
         rectangle(0.1,0.1, 0.2, 0.2),
         ]
-        nodes = similar_nodes(p2, [(0.1,0.1), (0.2,0.2), (0.3,0.3), (0.4, 0.4)])
+        nodes = Viznet.similar(p2, [(0.1,0.1), (0.2,0.2), (0.3,0.3), (0.4, 0.4)])
         @test nodes.primitives |> length == 4
     end
     for l2 in [
@@ -68,7 +68,7 @@ end
         arc(0.1, 0.1, 0.2, π, π/2),
         curve((0.0, 0.1), (0.2, 0.2), (0.3, 0.4), (0.5, 0.0)),
         ]
-        lines = similar_edges(l2, [((0.1,0.1), (0.2,0.2)), ((0.3,0.3), (0.4, 0.4))])
+        lines = Viznet.similar(l2, [((0.1,0.1), (0.2,0.2)), ((0.3,0.3), (0.4, 0.4))])
         @test lines.primitives |> length == 2
     end
 end
