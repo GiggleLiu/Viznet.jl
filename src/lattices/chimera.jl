@@ -62,8 +62,8 @@ end
 function redblack_bond!(lt, i::Int, bonds)
     CI = LinearIndices(lt |> size)
     for j=1:lt.Ny
-        for k1=1:4
-            for k2=5:8
+        for k2=5:8
+            for k1=1:4
                 push!(bonds, (CI[k2, i, j], CI[k1, i, j]))
             end
         end
