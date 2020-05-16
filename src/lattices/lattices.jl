@@ -48,6 +48,8 @@ Base.typed_vcat(lt::AbstractSites, loc1, loc2) = bond(lt, loc1, loc2)
 
 distance(i::Tuple{T,T}, j::Tuple{T,T}) where T<:Real = sqrt((i[1] - j[1])^2 + (i[2] - j[2])^2)
 Base.length(lt::AbstractSites) = length(vertices(lt))
+Base.CartesianIndices(lt::AbstractLattice) = CartesianIndices(size(lt))
+Base.LinearIndices(lt::AbstractLattice) = LinearIndices(size(lt))
 
 """
     bonds(atoms)
