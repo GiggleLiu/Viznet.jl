@@ -3,6 +3,7 @@ export bondstyle, nodestyle, textstyle
 bondstyle(x::Symbol; kwargs...) = bondstyle(Val(x); kwargs...)
 bondstyle(::Val{:default}) = bondstyle(Val(:line))
 bondstyle(::Val{:line}) = compose(context(), line())
+bondstyle(::Val{:dashed}) = compose(context(), line(), strokedash([1mm,1mm]))
 bondstyle(::Val{:rcurve}) = compose(context(), curve((0.0, 0.0), (0.075, 0.0), (0.075, 1.0), (0.0,1.0)))
 bondstyle(::Val{:lcurve}) = compose(context(), curve((0.0, 0.0), (-0.075, 0.0), (-0.075, 1.0), (0.0,1.0)))
 bondstyle(::Val{:dcurve}) = compose(context(), curve((0.0, 0.0), (0.0, 0.075), (1.0, 0.075), (1.0,0.0)))

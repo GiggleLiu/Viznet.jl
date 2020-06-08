@@ -7,17 +7,11 @@ function Base.getindex(lt::AbstractSquareLattice, i::Int)
     lt[CartesianIndices(bravais_size(lt))[i].I...]
 end
 Base.lastindex(lt::AbstractSquareLattice, i::Int) = size(lt, i)
-bravais_size(sq::AbstractSquareLattice) = (sq.Nx, sq.Ny)
-function bravais_size(sq::AbstractSquareLattice, i::Int)
-    if i==1
-        size(sq)[1]
-    elseif i==2
-        size(sq)[2]
-    else
-        throw(DimensionMismatch("expected dimension 1 or 2, got $i."))
-    end
+bravais_size(sq::AbstractSquareLattice) = size(sq)
+bravais_size(sq::AbstractSquareLattice, i::Int) = size(sq, i)
+function Base.size(sq::AbstractSquareLattice, i::Int)
+    size(sq)[i]
 end
-Base.size(sq::AbstractSquareLattice, args...) = bravais_size(sq, args...)
 
 struct SquareLattice <: AbstractSquareLattice
     Nx::Int
@@ -29,6 +23,7 @@ function Base.getindex(lt::SquareLattice, i::Real, j::Real)
     (i-0.5)*step, (j-0.5)*step
 end
 
+Base.size(sq::SquareLattice) = (sq.Nx, sq.Ny)
 vertices(sq::SquareLattice) = 1:sq.Nx*sq.Ny
 
 function isconnected(sq::SquareLattice, i::Int, j::Int)
