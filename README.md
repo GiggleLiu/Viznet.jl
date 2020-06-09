@@ -22,7 +22,7 @@ using Viznet
 using Compose
 
 # define you atoms/lattice
-ud = rand_unitdisk(20, 2.0)
+sq = SquareLattice(5, 5)
 
 # set the line brush and node brush
 linebrush = compose(context(), bondstyle(:default), stroke("black"))
@@ -30,13 +30,13 @@ nodebrush = nodestyle(:default)
 
 # draw something on the canvas
 canvas() do
-    for i in vertices(ud)
-        nodebrush >> ud[i]
+    for i in vertices(sq)
+        nodebrush >> sq[i]
     end
-    for (i, j) in bonds(ud)
-        linebrush >> ud[i;j]
+    for (i, j) in bonds(sq)
+        linebrush >> sq[i;j]
     end
-end |> SVG("_unitdisk.svg")
+end |> SVG("squarelattice.svg")
 ```
 
 To learn more about customizing styles, please go to the documentation of [Compose.jl](http://giovineitalia.github.io/Compose.jl/latest/).
@@ -46,8 +46,8 @@ To learn more about customizing styles, please go to the documentation of [Compo
 
 ![spinglass](examples/spinglass.svg)
 
-##### [Unit Disk Graph](examples/unit_disk_graph.jl)
-![unitdisk](examples/unitdisk.svg)
+##### [Unit Disk Graph](examples/chimera.jl)
+![chimera](examples/chimera.svg)
 
 
 ## Styles

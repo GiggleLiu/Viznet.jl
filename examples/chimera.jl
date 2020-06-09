@@ -46,4 +46,4 @@ function show_chimera(Lx, Ly)
     compose(context(0.05, 0.05, 0.9, 0.9), g)
 end
 
-show_chimera(3,3) |> SVG("_chimera.svg")
+show_chimera(5,3) |> SVG("_chimera.svg")
