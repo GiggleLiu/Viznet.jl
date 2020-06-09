@@ -25,7 +25,7 @@ using Compose
 ud = rand_unitdisk(20, 2.0)
 
 # set the line brush and node brush
-linebrush = bondstyle(:default)
+linebrush = compose(context(), bondstyle(:default), stroke("black"))
 nodebrush = nodestyle(:default)
 
 # draw something on the canvas
