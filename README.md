@@ -46,7 +46,7 @@ To learn more about customizing styles, please go to the documentation of [Compo
 
 ![spinglass](examples/spinglass.svg)
 
-##### [Unit Disk Graph](examples/chimera.jl)
+##### [Chimera Lattice](examples/chimera.jl)
 ![chimera](examples/chimera.svg)
 
 
