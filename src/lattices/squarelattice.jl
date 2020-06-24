@@ -1,17 +1,6 @@
-abstract type AbstractSquareLattice <:AbstractLattice end
+abstract type AbstractSquareLattice <:AbstractParallelogram end
 
-export SquareLattice, bravais_size
-
-# square lattice
-function Base.getindex(lt::AbstractSquareLattice, i::Int)
-    lt[CartesianIndices(bravais_size(lt))[i].I...]
-end
-Base.lastindex(lt::AbstractSquareLattice, i::Int) = size(lt, i)
-bravais_size(sq::AbstractSquareLattice) = size(sq)
-bravais_size(sq::AbstractSquareLattice, i::Int) = size(sq, i)
-function Base.size(sq::AbstractSquareLattice, i::Int)
-    size(sq)[i]
-end
+export SquareLattice
 
 struct SquareLattice <: AbstractSquareLattice
     Nx::Int
@@ -25,6 +14,8 @@ end
 
 Base.size(sq::SquareLattice) = (sq.Nx, sq.Ny)
 vertices(sq::SquareLattice) = 1:sq.Nx*sq.Ny
+vec_a(sq::SquareLattice) = [1.0, 0.0]
+vec_b(sq::SquareLattice) = [0.0, 1.0]
 
 function isconnected(sq::SquareLattice, i::Int, j::Int)
     u = unit(sq)

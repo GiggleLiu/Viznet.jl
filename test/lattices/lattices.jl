@@ -8,6 +8,7 @@ using Viznet
     @test (bonds(ud) |> length) == 1
 end
 
+include("parallelogram.jl")
 include("squarelattice.jl")
 
 include("chimera.jl")

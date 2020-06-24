@@ -85,5 +85,6 @@ end
 
 
 include("unitdisk.jl")
+include("parallelogram.jl")
 include("squarelattice.jl")
 include("chimera.jl")
