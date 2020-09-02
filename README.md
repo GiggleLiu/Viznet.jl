@@ -12,7 +12,7 @@ Warning: still under development...
 To install, type `]` in a Julia REPL and then
 
 ```julia pkg
-pkg> add https://github.com/GiggleLiu/Viznet.jl
+pkg> add Viznet
 ```
 
 As a first example, open a Julia REPL and type
