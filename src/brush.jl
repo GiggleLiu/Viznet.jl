@@ -47,11 +47,15 @@ nnode() = isempty(NODE_CACHE) ? 0 : sum(length, values(NODE_CACHE))
 nedge() = isempty(EDGE_CACHE) ? 0 : sum(length, values(EDGE_CACHE))
 ntext() = isempty(TEXT_CACHE) ? 0 : sum(length, values(TEXT_CACHE))
 
-function inner_most_container(c::Context)
-    if !isempty(c.container_children)
-        return inner_most_container(first(c.container_children))
+function inner_most_containers(c::Context, out=[])
+    if length(c.container_children) == 0
+        push!(out, c)
+    else
+        for child in c.container_children
+            inner_most_containers(child, out)
+        end
     end
-    return c
+    return out
 end
 
 function Base.:>>(brush::Context, x::Tuple{<:NTuple{2,T}, <:NTuple{2,T}}) where T<:Real
@@ -70,9 +74,10 @@ function flush!(d::Dict)
     lst = Context[]
     for (brush, lines) in d
         b = deepcopy(brush)
-        c = inner_most_container(b)
-        line = first(c.form_children)
-        c.form_children.head = similar(line, lines)
+        for c in inner_most_containers(b)
+            line = first(c.form_children)
+            c.form_children.head = similar(line, lines)
+        end
         push!(lst, b)
     end
     empty!(d)

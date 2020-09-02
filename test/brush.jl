@@ -1,5 +1,5 @@
 using Viznet
-using Viznet: inner_most_container, put_edge!, put_node!, empty_cache!, nedge, nnode,
+using Viznet: inner_most_containers, put_edge!, put_node!, empty_cache!, nedge, nnode,
     EDGE_CACHE, NODE_CACHE
 using Test
 using Compose
@@ -8,7 +8,9 @@ using Compose
     empty_cache!()
     c = compose(context(), compose(context(), line()))
     n = compose(context(), compose(context(), circle()))
-    ic = inner_most_container(c)
+    ics = inner_most_containers(c)
+    @test length(ics) == 1
+    ic = ics[]
     @test first(ic.form_children) isa Compose.Form{<:Compose.LinePrimitive}
     put_edge!(c, (0.3, 0.4), (2.3, 1.4))
     put_edge!(c, (0.3, 0.5), (2.3, 1.4))

@@ -45,7 +45,6 @@ function intersection(line::Vector{PointT}, theta::Real, align::PointT)
     for segment in segments
         x_ = getindex.(segment, 1)
         y_ = getindex.(segment, 2)
-        @show x_, y_
         try
             f = Spline1D(x_, y_; k=1)
             push!(ys, f(x))
