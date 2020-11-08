@@ -69,8 +69,8 @@ function bonds(ud::AbstractSites)
     return edges
 end
 
-function showlattice(lt; line_style=compose(bondstyle(:default), stroke("black")),
-        node_style=compose(context(), nodestyle(:default), stroke("black"), fill("white"), linewidth(0.5mm)),
+function showlattice(lt; line_style=bondstyle(:default, stroke("black")),
+        node_style=nodestyle(:default, stroke("black"), fill("white"), linewidth(0.5mm)),
         text_style=textstyle(:default))
     empty_cache!()
     for node in vertices(lt)

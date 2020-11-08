@@ -1,26 +1,53 @@
 export bondstyle, nodestyle, textstyle
 
-bondstyle(x::Symbol; kwargs...) = bondstyle(Val(x); kwargs...)
-bondstyle(::Val{:default}) = bondstyle(Val(:line))
-bondstyle(::Val{:line}) = compose(context(), line())
-bondstyle(::Val{:dashed}) = compose(context(), line(), strokedash([1mm,1mm]))
-bondstyle(::Val{:rcurve}) = compose(context(), curve((0.0, 0.0), (0.075, 0.0), (0.075, 1.0), (0.0,1.0)))
-bondstyle(::Val{:lcurve}) = compose(context(), curve((0.0, 0.0), (-0.075, 0.0), (-0.075, 1.0), (0.0,1.0)))
-bondstyle(::Val{:dcurve}) = compose(context(), curve((0.0, 0.0), (0.0, 0.075), (1.0, 0.075), (1.0,0.0)))
-bondstyle(::Val{:ucurve}) = compose(context(), curve((0.0, 0.0), (0.0, -0.075), (1.0, -0.075), (1.0,0.0)))
-bondstyle(::Val{:arrow}) = compose(context(), arrow(),
-                                   (context(), line()))
+function bondstyle(shape::Symbol, properties...; r=0.075, dashed=false, dash_params=[1mm, 1mm])
+    if !any(x->x isa Compose.Property{Compose.StrokePrimitive}, properties)
+        properties = (properties..., stroke("black"))
+    end
+    if dashed
+        properties = (properties..., strokedash(dash_params))
+    end
+    if shape == :arrow
+        return compose(context(), arrow(), (context(), line()), properties...)
+    end
+    geometry = if shape == :line || shape==:default
+        line()
+    elseif shape == :rcurve
+        curve((0.0, 0.0), (r, 0.0), (r, 1.0), (0.0,1.0))
+    elseif shape == :lcurve
+        curve((0.0, 0.0), (-r, 0.0), (-r, 1.0), (0.0,1.0))
+    elseif shape == :dcurve
+        curve((0.0, 0.0), (0.0, r), (1.0, r), (1.0,0.0))
+    elseif shape == :ucurve
+        curve((0.0, 0.0), (0.0, -r), (1.0, -r), (1.0,0.0))
+    else
+        error("shape $shape not defined.")
+    end
+    compose(context(), geometry, properties...)
+end
 
-nodestyle(x::Symbol; kwargs...) = nodestyle(Val(x); kwargs...)
-nodestyle(::Val{:default}; r::Real=0.02) = nodestyle(Val(:circle); r=r)
-nodestyle(::Val{:circle}; r::Real=0.02) = compose(context(), circle(0.0, 0.0, r))
-nodestyle(::Val{:diamond}; r::Real=0.02, θ::Real=0.0) = compose(context(), rot_ngon(θ, 0.0, 0.0, r, 4))
-nodestyle(::Val{:square}; r::Real=0.02) = compose(context(), rectangle(-r, -r, 2r, 2r))
-nodestyle(::Val{:triangle}; r::Real=0.02, θ::Real=0.0) = compose(context(), rot_ngon(θ, 0.0, 0.0, r, 3))
+function nodestyle(shape::Symbol, properties...; r=0.02, θ=0.0)
+    geometry = if shape == :circle || shape==:default
+        circle(0.0, 0.0, r)
+    elseif shape == :diamond
+        rot_ngon(θ, 0.0, 0.0, r, 4)
+    elseif shape == :square
+        rectangle(-r, -r, 2r, 2r)
+    elseif shape == :triangle
+        rot_ngon(θ, 0.0, 0.0, r, 3)
+    else
+        error("shape $shape not defined.")
+    end
+    compose(context(), geometry, properties...)
+end
 
-textstyle(x::Symbol; kwargs...) = textstyle(Val(x); kwargs...)
-textstyle(::Val{:default}) = textstyle(Val(:center))
-textstyle(::Val{:center}; r::Real=0.02, θ::Real=0.0) = compose(context(), text(0.0, 0.0, "", hcenter, vcenter))
+function textstyle(shape::Symbol, properties...)
+    if shape == :default
+        compose(context(), text(0.0, 0.0, "", hcenter, vcenter), properties...)
+    else
+        error("shape $shape not defined.")
+    end
+end
 
 """
     rot(a, b, θ)

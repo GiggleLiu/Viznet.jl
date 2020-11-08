@@ -4,11 +4,11 @@ using Compose
 function show_chimera(Lx, Ly)
     lt = ChimeraLattice(Lx, Ly)
     g = canvas() do
-        r = compose(context(), bondstyle(:lcurve), stroke("red"))
-        b = compose(context(), bondstyle(:ucurve), stroke("blue"))
-        rb = compose(context(), bondstyle(:default), stroke("black"))
-        rnode=compose(context(), nodestyle(:default), stroke("silver"), fill("red"), linewidth(0.2mm))
-        bnode=compose(context(), nodestyle(:default), stroke("silver"), fill("blue"), linewidth(0.2mm))
+        r = bondstyle(:lcurve, stroke("red"))
+        b = bondstyle(:ucurve, stroke("blue"))
+        rb = bondstyle(:default, stroke("black"))
+        rnode= nodestyle(:default, stroke("silver"), fill("red"), linewidth(0.2mm))
+        bnode= nodestyle(:default, stroke("silver"), fill("blue"), linewidth(0.2mm))
         text_style=textstyle(:default)
 
         for node in vertices(lt)

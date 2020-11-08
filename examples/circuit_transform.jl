@@ -7,7 +7,7 @@ diamond = nodestyle(:diamond)
 tri1 = nodestyle(:triangle; θ=-π/2)
 tri2 = nodestyle(:triangle; θ=π/2)
 sq = nodestyle(:square; r=0.015)
-e1 = compose(context(), bondstyle(:default), stroke("black"))
+e1 = bondstyle(:default, stroke("black"))
 lt = SquareLattice(10, 10)
 
 function vnode(node)

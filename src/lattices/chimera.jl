@@ -82,14 +82,12 @@ function black_bond!(lt, i::Int, bonds)
     return bonds
 end
 
+#=
 function showlattice(lt::ChimeraLattice;
-        #line_styles=(compose(context(), curve((0.0, 0.0), (-0.5*unit(lt), 0.0), (-0.5*unit(lt), 1.0), (0.0,1.0)), stroke("red")),
-        #            compose(context(), curve((0.0, 0.0), (0.0, -0.5*unit(lt)), (1.0, -0.5*unit(lt)), (1.0,0.0)), stroke("blue")),
-        #            compose(context(), bondstyle(:default), stroke("black"))),
-        line_styles=(compose(context(), bondstyle(:default), stroke("black")),
-                     compose(context(), bondstyle(:default), stroke("black")),
-                    compose(context(), bondstyle(:default), stroke("gray"))),
-        node_style=compose(context(), nodestyle(:default, r=0.3*unit(lt)), stroke("black"), fill("white"), linewidth(0.5mm)),
+        line_styles=(bondstyle(:default, stroke("black")),
+                     bondstyle(:default, stroke("black")),
+                    bondstyle(:default, stroke("gray"))),
+        node_style=nodestyle(:default, r=0.3*unit(lt), stroke("black"), fill("white"), linewidth(0.5mm)),
         text_style=textstyle(:default))
     r, b, rb = line_styles
     empty_cache!()
@@ -120,3 +118,4 @@ function showlattice(lt::ChimeraLattice;
     end
     compose(context(0.05, 0.05, 0.9, 0.9), flush!())
 end
+=#

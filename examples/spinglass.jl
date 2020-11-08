@@ -5,8 +5,8 @@ Random.seed!(4)
 
 function spinglass(lt, coulping::Vector)
     nodebrush = nodestyle(:default; r=0.011)
-    eb1 = compose(bondstyle(:default), linewidth(1mm), stroke("skyblue"))
-    eb2 = compose(bondstyle(:default), linewidth(1mm), stroke("orange"))
+    eb1 = bondstyle(:default, linewidth(1mm), stroke("skyblue"))
+    eb2 = bondstyle(:default, linewidth(1mm), stroke("orange"))
     _coupling = copy(coulping)
     eb() = popfirst!(_coupling) > 0 ? eb1 : eb2
     g = canvas() do
