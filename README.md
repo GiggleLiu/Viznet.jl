@@ -25,7 +25,7 @@ using Compose
 sq = SquareLattice(5, 5)
 
 # set the line brush and node brush
-linebrush = compose(context(), bondstyle(:default), stroke("black"))
+linebrush = bondstyle(:default, stroke("green"))
 nodebrush = nodestyle(:default)
 
 # draw something on the canvas
