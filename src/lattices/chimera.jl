@@ -22,12 +22,13 @@ gap_x(lt::ChimeraLattice) = 0.5
 gap_y(lt::ChimeraLattice) = 0.5
 unit(lt::ChimeraLattice) = 1/(max(lt.Nx*(2+gap_x(lt)), lt.Ny*(4+gap_y(lt))))
 
+# for beautiful printing.
 function Base.getindex(lt::ChimeraLattice, k::Int, i::Int, j::Int)
     ki = (k-1) ÷ 4
     kj = mod1(k, 4)-1
     x = ((i-1)*(gap_x(lt) + 2)+ki+0.5)*unit(lt)
     y = ((j-1)*(gap_y(lt) + 4)+kj+0.5)*unit(lt)
-    return (x, y)
+    return (x+0.01*kj, y+0.02*ki)
 end
 
 function Base.getindex(lt::ChimeraLattice, i::Int)
@@ -82,10 +83,13 @@ function black_bond!(lt, i::Int, bonds)
 end
 
 function showlattice(lt::ChimeraLattice;
-        line_styles=(compose(context(), bondstyle(:lcurve), stroke("red")),
-                    compose(context(), bondstyle(:ucurve), stroke("blue")),
-                    compose(context(), bondstyle(:default), stroke("black"))),
-        node_style=compose(context(), nodestyle(:default), stroke("black"), fill("white"), linewidth(0.5mm)),
+        #line_styles=(compose(context(), curve((0.0, 0.0), (-0.5*unit(lt), 0.0), (-0.5*unit(lt), 1.0), (0.0,1.0)), stroke("red")),
+        #            compose(context(), curve((0.0, 0.0), (0.0, -0.5*unit(lt)), (1.0, -0.5*unit(lt)), (1.0,0.0)), stroke("blue")),
+        #            compose(context(), bondstyle(:default), stroke("black"))),
+        line_styles=(compose(context(), bondstyle(:default), stroke("black")),
+                     compose(context(), bondstyle(:default), stroke("black")),
+                    compose(context(), bondstyle(:default), stroke("gray"))),
+        node_style=compose(context(), nodestyle(:default, r=0.3*unit(lt)), stroke("black"), fill("white"), linewidth(0.5mm)),
         text_style=textstyle(:default))
     r, b, rb = line_styles
     empty_cache!()
