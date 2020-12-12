@@ -1,5 +1,5 @@
 export vertices, bonds, distance, unit, isconnected
-export showlattice
+export viz
 
 """
     AbstractSites
@@ -69,20 +69,19 @@ function bonds(ud::AbstractSites)
     return edges
 end
 
-function showlattice(lt; line_style=bondstyle(:default, stroke("black")),
+function viz(lt; line_style=bondstyle(:default, stroke("black")),
         node_style=nodestyle(:default, stroke("black"), fill("white"), linewidth(0.5mm)),
-        text_style=textstyle(:default))
+        text_style=textstyle(:default), labels=vertices(lt))
     empty_cache!()
-    for node in vertices(lt)
+    for (i,node) in enumerate(vertices(lt))
         node_style >> lt[node]
-        text_style >> (lt[node], "$node")
+        text_style >> (lt[node], "$(labels[i])")
     end
     for bond in bonds(lt)
         line_style >> lt[bond[1]; bond[2]]
     end
     flush!()
 end
-
 
 include("unitdisk.jl")
 include("parallelogram.jl")
