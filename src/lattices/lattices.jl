@@ -83,6 +83,11 @@ function viz(lt; line_style=bondstyle(:default, stroke("black")),
     flush!()
 end
 
+
+function Base.show(io::IO, mime::MIME"text/html", lt::AbstractSites)
+    Base.show(io, mime, viz(lt))
+end
+
 include("unitdisk.jl")
 include("parallelogram.jl")
 include("squarelattice.jl")
