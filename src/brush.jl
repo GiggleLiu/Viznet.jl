@@ -47,15 +47,11 @@ nnode() = isempty(NODE_CACHE) ? 0 : sum(length, values(NODE_CACHE))
 nedge() = isempty(EDGE_CACHE) ? 0 : sum(length, values(EDGE_CACHE))
 ntext() = isempty(TEXT_CACHE) ? 0 : sum(length, values(TEXT_CACHE))
 
-function inner_most_containers(c::Context, out=[])
-    if length(c.container_children) == 0
-        push!(out, c)
-    else
-        for child in c.container_children
-            inner_most_containers(child, out)
-        end
+function inner_most_containers(f, c::Context)
+    f(c)
+    for child in c.container_children
+        inner_most_containers(f, child)
     end
-    return out
 end
 
 function Base.:>>(brush::Context, x::Tuple{<:NTuple{2,T}, <:NTuple{2,T}}) where T<:Real
@@ -70,13 +66,19 @@ function Base.:>>(brush::Context, position::NTuple{2,Real})
     put_node!(brush, Float64.(position))
 end
 
+function update_locs!(c, locs)
+    isempty(c) && return
+    c.head = similar(c.head, locs)
+    update_locs!(c.tail, locs)
+    return
+end
+
 function flush!(d::Dict)
     lst = Context[]
     for (brush, lines) in d
         b = deepcopy(brush)
-        for c in inner_most_containers(b)
-            line = first(c.form_children)
-            c.form_children.head = similar(line, lines)
+        inner_most_containers(b) do c
+            update_locs!(c.form_children, lines)
         end
         push!(lst, b)
     end
@@ -104,11 +106,24 @@ function canvas(f)
 end
 
 similar(e::Form{<:LinePrimitive}, point_arrays) = line(point_arrays)
+
+function similar(e::Form{<:LinePrimitive}, point_arrays::AbstractVector{Tuple{Float64,Float64}})
+    c = first(e.primitives)
+    newpoints = map(x->[x .+ _value.(p) for p in c.points], point_arrays)
+    line(newpoints)
+end
+
 function similar(e::Form{<:ArcPrimitive}, point_arrays)
     c = first(e.primitives)
     as = getindex.(point_arrays,1)
     bs = getindex.(point_arrays,2)
     arc(as, bs, [c.radius], [c.angle1], [c.angle2], [c.sector])
+end
+
+function similar(e::Form{<:ArcPrimitive}, point_arrays::AbstractVector{Tuple{Float64,Float64}})
+    c = first(e.primitives)
+    center = map(x->x .+ _value.(c.center), point_arrays)
+    arc(getindex.(center, 1), getindex.(center, 2), [c.radius], [c.angle1], [c.angle2], [c.sector])
 end
 
 function similar(e::Form{<:CurvePrimitive}, point_arrays)
@@ -118,6 +133,15 @@ function similar(e::Form{<:CurvePrimitive}, point_arrays)
     ctrl0s = map(x->x[1] .- _value.(c.anchor0) .+ _value.(c.ctrl0), point_arrays)
     ctrl1s = map(x->x[2] .- _value.(c.anchor1) .+ _value.(c.ctrl1), point_arrays)
     curve(as, ctrl0s, ctrl1s, bs)
+end
+
+function similar(e::Form{<:CurvePrimitive}, point_arrays::AbstractVector{Tuple{Float64,Float64}})
+    c = first(e.primitives)
+    anchor0s = map(x->x .+ _value.(c.anchor0), point_arrays)
+    anchor1s = map(x->x .+ _value.(c.anchor1), point_arrays)
+    ctrl0s = map(x->x .+ _value.(c.ctrl0), point_arrays)
+    ctrl1s = map(x->x .+ _value.(c.ctrl1), point_arrays)
+    curve(anchor0s, ctrl0s, ctrl1s, anchor1s)
 end
 
 function similar(n::Form{<:CirclePrimitive}, xys)

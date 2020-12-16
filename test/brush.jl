@@ -8,7 +8,8 @@ using Compose
     empty_cache!()
     c = compose(context(), compose(context(), line()))
     n = compose(context(), compose(context(), circle()))
-    ics = inner_most_containers(c)
+    ics = []
+    inner_most_containers(x->!isempty(x.form_children) && push!(ics, x), c)
     @test length(ics) == 1
     ic = ics[]
     @test first(ic.form_children) isa Compose.Form{<:Compose.LinePrimitive}
@@ -61,6 +62,9 @@ end
         polygon([(0.1, 0.2), (0.2, 0.3), (0.3,0.3)]),
         circle(0.1, 0.2, 0.3),
         rectangle(0.1,0.1, 0.2, 0.2),
+        line(),
+        arc(0.1, 0.1, 0.2, π, π/2),
+        curve((0.0, 0.1), (0.2, 0.2), (0.3, 0.4), (0.5, 0.0)),
         ]
         nodes = Viznet.similar(p2, [(0.1,0.1), (0.2,0.2), (0.3,0.3), (0.4, 0.4)])
         @test nodes.primitives |> length == 4
