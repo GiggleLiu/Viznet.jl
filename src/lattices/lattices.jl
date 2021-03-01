@@ -69,9 +69,9 @@ function bonds(ud::AbstractSites)
     return edges
 end
 
-function viz(lt::AbstractSites; line_style=bondstyle(:default, stroke("black")),
-             node_style=nodestyle(:default, r=unit(lt)*0.2, stroke("black"), fill("white"), linewidth(0.5mm)),
-             text_style=textstyle(:default), labels=vertices(lt))
+function viz(lt::AbstractSites; line_style=bondstyle(:default, stroke("black"), linewidth(3*unit(lt)*mm)),
+             node_style=nodestyle(:default, r=unit(lt)*0.2, stroke("black"), fill("white"), linewidth(3*unit(lt)*mm)),
+             text_style=textstyle(:default, fontsize(unit(lt)*100pt)), labels=vertices(lt))
     empty_cache!()
     for (i,node) in enumerate(vertices(lt))
         node_style >> lt[node]
