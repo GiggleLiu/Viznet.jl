@@ -70,8 +70,8 @@ function bonds(ud::AbstractSites)
 end
 
 function viz(lt::AbstractSites; line_style=bondstyle(:default, stroke("black")),
-        node_style=nodestyle(:default, stroke("black"), fill("white"), linewidth(0.5mm)),
-        text_style=textstyle(:default), labels=vertices(lt))
+             node_style=nodestyle(:default, r=unit(lt)*0.2, stroke("black"), fill("white"), linewidth(0.5mm)),
+             text_style=textstyle(:default), labels=vertices(lt))
     empty_cache!()
     for (i,node) in enumerate(vertices(lt))
         node_style >> lt[node]

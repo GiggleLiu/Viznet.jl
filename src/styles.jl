@@ -41,11 +41,13 @@ function nodestyle(shape::Symbol, properties...; r=0.02, θ=0.0)
     compose(context(), geometry, properties...)
 end
 
-function textstyle(shape::Symbol, properties...)
-    if shape == :default
+function textstyle(sym::Symbol, properties...; width=0.2, height=0.1)
+    if sym == :default
         compose(context(), text(0.0, 0.0, "", hcenter, vcenter), properties...)
+    elseif sym == :math
+        compose(context(), mathjax(0.0, 0.0, width, height, ""), properties...)
     else
-        error("shape $shape not defined.")
+        error("style $sym not defined.")
     end
 end
 

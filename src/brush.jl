@@ -170,3 +170,11 @@ function similar(n::Form{<:TextPrimitive}, xys)
     ts = getindex.(xys, 3)
     text(xs, ys, ts, [c.halign], [c.valign], [c.rot], [c.offset])
 end
+
+function similar(n::Form{<:MathJaxPrimitive}, xys)
+    c = first(n.primitives)
+    xs = map(p->_value(c.position[1]) + p[1], xys)
+    ys = map(p->_value(c.position[2]) + p[2], xys)
+    ts = getindex.(xys, 3)
+    mathjax(xs, ys, [c.size[1]], [c.size[2]], ts, [c.rot], [c.offset])
+end
