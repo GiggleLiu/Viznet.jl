@@ -2,6 +2,7 @@ module Viznet
 
 using Compose
 
+include("ordered_dict.jl")
 include("mathjax.jl")
 include("lattices/lattices.jl")
 #include("compose.jl")

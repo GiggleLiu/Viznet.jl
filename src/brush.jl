@@ -3,9 +3,9 @@ using Compose: LinePrimitive, CirclePrimitive, Form, SimplePolygonPrimitive,
 const PointT = Tuple{Float64,Float64}
 const TextT = Tuple{Float64,Float64,String}
 const EdgeT = Tuple{PointT, PointT}
-const NODE_CACHE = Dict{Context, Vector{PointT}}()
-const EDGE_CACHE = Dict{Context, Vector{EdgeT}}()
-const TEXT_CACHE = Dict{Context, Vector{TextT}}()
+const NODE_CACHE = MyOrderedDict{Context, Vector{PointT}}()
+const EDGE_CACHE = MyOrderedDict{Context, Vector{EdgeT}}()
+const TEXT_CACHE = MyOrderedDict{Context, Vector{TextT}}()
 const TextBrush = Pair{Context,String}
 
 export flush!, canvas
@@ -73,7 +73,7 @@ function update_locs!(c, locs)
     return
 end
 
-function flush!(d::Dict)
+function flush!(d::MyOrderedDict)
     lst = Context[]
     for (brush, lines) in d
         b = deepcopy(brush)

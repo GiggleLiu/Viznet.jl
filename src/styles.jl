@@ -26,13 +26,15 @@ function bondstyle(shape::Symbol, properties...; r=0.075, dashed=false, dash_par
     compose(context(), geometry, properties...)
 end
 
-function nodestyle(shape::Symbol, properties...; r=0.02, θ=0.0)
+function nodestyle(shape::Symbol, properties...; r=0.02, θ=0.0, w=1.0)
     geometry = if shape == :circle || shape==:default
         circle(0.0, 0.0, r)
     elseif shape == :diamond
         rot_ngon(θ, 0.0, 0.0, r, 4)
     elseif shape == :square
         rectangle(-r, -r, 2r, 2r)
+    elseif shape == :rectangle
+        rectangle(-r*w, -r, 2r*w, 2r)
     elseif shape == :triangle
         rot_ngon(θ, 0.0, 0.0, r, 3)
     else
